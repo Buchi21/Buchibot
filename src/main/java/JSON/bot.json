@@ -1,0 +1,12 @@
+{
+  "NumberofChannels": "1",
+  "channels": [{
+      "channelName": "buchi_21",
+      "channelID": "474207213"
+    },
+    {
+      "channelName": "skullgamerlp",
+      "channelID": "474207213"
+    }
+  ]
+}

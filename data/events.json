@@ -1,0 +1,9 @@
+{
+  "buchi_21":
+  {
+    "title-change": {
+      "active": true,
+      "response": "/me Der Titel wurde geändert: &{title} skullg19Noted"
+    }
+  }
+}
