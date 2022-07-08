@@ -1,14 +1,11 @@
 package commands;
 
-import Spotify.Song;
 import Spotify.getSong;
 import Spotify.songActions;
 import com.github.twitch4j.chat.TwitchChat;
 import com.github.twitch4j.common.enums.CommandPermission;
 import google.Video;
 import google.getVideos;
-import listener.ChatListener;
-import listener.titleChangeListener;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
