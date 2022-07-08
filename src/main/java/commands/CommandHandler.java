@@ -52,22 +52,21 @@ public record CommandHandler(String command, String user, String channel, Twitch
 
     public int checkIfMessageContainsCustomCommand() throws IOException, ParseException, InterruptedException {
 
-        JSONArray commandArray = new GetValuesfromJSON().GetCommands(channel);
         int cooldown = 1;
-        Spotify.songActions songActions = new songActions(channel);
+        JSONArray commandArray = new GetValuesfromJSON().GetCommands(channel);
 
         for (Object object : commandArray) {
-            JSONObject ChannelCommandObject = (JSONObject) object;
+            JSONObject commandObject = (JSONObject) object;
 
-            if (isCommandandisActive(ChannelCommandObject)) {
-                String response = (String) ChannelCommandObject.get("response");
-                cooldown = Integer.parseInt((String) ChannelCommandObject.get("cooldown"));
-                String functionality = (String) ChannelCommandObject.get("functionality");
+            if (isCommand(commandObject)) {
+                String response = (String) commandObject.get("response");
+                cooldown = Integer.parseInt((String) commandObject.get("cooldown"));
+                String functionality = (String) commandObject.get("functionality");
 
                 if(functionality.equals("default")){
                     chat.sendMessage(channel, response);
                 }else{
-                    response = checkCommandforFunctionality(channel, functionality, response, ChannelCommandObject);
+                    response = checkCommandforFunctionality(channel, functionality, response, commandObject);
                     chat.sendMessage(channel, response);
                 }
             }else{
@@ -78,27 +77,28 @@ public record CommandHandler(String command, String user, String channel, Twitch
         return cooldown;
     }
 
-    private String checkCommandforFunctionality(String channel, String functionality, String response, JSONObject CommandObject) throws IOException, ParseException, InterruptedException {
+    private String checkCommandforFunctionality(String channel, String functionality, String response, JSONObject commandObject) throws IOException, ParseException, InterruptedException {
 
         if(functionality.equals("Youtube-Video")){
-            String youtubeChannelID = (String) CommandObject.get("channel-id");
+            String youtubeChannelID = (String) commandObject.get("channel-id");
             Video video = new getVideos().getNewestVideo(channel, youtubeChannelID);
             response = response.replace("&{title}", video.getTitle());
             response = response.replace("&{videoURL}", video.getVideoURL());
         }else if(functionality.equals("Skip-Command")){
-            response = skipCommand();
+            response = skipCommand(commandObject);
             lastSong = new getSong(channel).getcurrentlyPlayingSong().getTitle();
         }
         return response;
     }
 
-    private String skipCommand() throws IOException, ParseException, InterruptedException {
+    private String skipCommand(JSONObject commandObject) throws IOException, ParseException, InterruptedException {
 
         String currentSong = new getSong(channel).getcurrentlyPlayingSong().getTitle();
         System.out.println(currentSong);
 
         if(currentSong.equals("Nothing")){
-            return "/me Es muss ein Song abgespielt werden, damit er geskipped werden kann!";
+            return (String) commandObject.get("no-song-response");
+            //return "/me Es muss ein Song abgespielt werden, damit er geskipped werden kann!";
         }
 
         if(permissions.contains(CommandPermission.MODERATOR)){
@@ -107,10 +107,11 @@ public record CommandHandler(String command, String user, String channel, Twitch
             try{
                 skipUserlist.clear();
             }catch (NullPointerException ignored){}
-            return "/me Song wird geskipped!";
+            return (String) commandObject.get("song-skip-response");
+            //return "/me Song wird geskipped!";
         }
         else if(!currentSong.equals(lastSong)){
-            numberofSkips = AMOUNT_OF_USER_TO_SKIP;
+            numberofSkips = Integer.parseInt((String) commandObject.get("number-of-user-to-skip"));
             try{
                 skipUserlist.clear();
             }catch (NullPointerException ignored){}
@@ -118,25 +119,31 @@ public record CommandHandler(String command, String user, String channel, Twitch
             numberofSkips--;
             skipUserlist.add(user);
 
-            return "/me Skip Voting gestartet, Es müssen " + numberofSkips + " weitere User !skip eingeben um den Song zu skippen!";
+            String response = (String) commandObject.get("song-skip-start-response");
+            return response.replace("&{numberofSkips}", String.valueOf(numberofSkips));
+
+            //return "/me Skip Voting gestartet, Es müssen " + numberofSkips + " weitere User !skip eingeben um den Song zu skippen!";
         }
         else if(!skipUserlist.contains(user)) {
             numberofSkips--;
             skipUserlist.add(user);
 
             if(numberofSkips > 0){
-                return "/me Es müssen " + numberofSkips + " weitere Personen !skip schreiben um den Song zu skippen!";
+                String response = (String) commandObject.get("song-skip-weiter-response");
+                return response.replace("&{numberofSkips}", String.valueOf(numberofSkips));
+                //return "/me Es müssen " + numberofSkips + " weitere Personen !skip schreiben um den Song zu skippen!";
             }else{
                 songActions.nextSong();
-                return "/me Song wird geskipped!";
+                return (String) commandObject.get("song-skip-response");
+                //return "/me Song wird geskipped!";
             }
         }
         return "";
     }
 
-    private boolean isCommandandisActive(JSONObject jsonObject) {
-        String ChannelCommand = (String) jsonObject.get("command");
-        return (boolean) jsonObject.get("active") && command.equals(ChannelCommand);
+    private boolean isCommand(JSONObject commandObject) {
+        String channelCommand = (String) commandObject.get("command");
+        return (boolean) commandObject.get("active") && command.equals(channelCommand);
     }
 
 }
