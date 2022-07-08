@@ -31,3 +31,5 @@ data/spotify.json
 data/twitch.json
 .gradle/7.1/executionHistory/executionHistory.bin
 *.bin
+data/spotify.json
+data/twitch.json
