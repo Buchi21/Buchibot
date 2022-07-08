@@ -1,9 +1,0 @@
-{
-  "song-command": {
-    "active": true,
-    "command": "!song",
-    "cooldown": "10",
-    "respone": "/me Buchi hört gerade &{Song} von &{Artist}",
-    "no-song-respone": "/me Im Moment wird kein Song abgespielt"
-  }
-}

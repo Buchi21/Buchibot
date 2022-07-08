@@ -1,6 +1,7 @@
 package listener;
 
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
+import com.github.twitch4j.chat.ITwitchChat;
 import com.github.twitch4j.chat.TwitchChat;
 import com.github.twitch4j.common.events.domain.EventChannel;
 import com.github.twitch4j.events.ChannelChangeTitleEvent;
@@ -13,9 +14,9 @@ import java.io.IOException;
 
 public class titleChangeListener {
 
-    public final TwitchChat chat;
+    public final ITwitchChat chat;
 
-    public titleChangeListener(TwitchChat chat){
+    public titleChangeListener(ITwitchChat chat){
         this.chat = chat;
     }
 
