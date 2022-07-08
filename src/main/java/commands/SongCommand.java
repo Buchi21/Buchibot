@@ -3,14 +3,11 @@ package commands;
 import Spotify.Song;
 import Spotify.getSong;
 import com.github.twitch4j.chat.TwitchChat;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utils.GetValuesfromJSON;
 
 import java.io.IOException;
-import java.net.http.HttpResponse;
 
 public class SongCommand {
 

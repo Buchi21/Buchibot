@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public record CommandHandler(String command, String user, String channel, TwitchChat chat, Set<CommandPermission> permissions) {
-
-    private static final int AMOUNT_OF_USER_TO_SKIP = 5;
     private static int numberofSkips;
     private static final ArrayList<String> skipUserlist = new ArrayList<>();
     private static String lastSong = "Nothing";
