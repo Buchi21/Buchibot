@@ -21,6 +21,11 @@
           "active": true,
           "command" : "!skip",
           "cooldown": "0",
+          "number-of-user-to-skip": "5",
+          "no-song-response": "/me Es muss ein Song abgespielt werden, damit er geskipped werden kann!",
+          "song-skip-response": "/me Song wird geskipped!",
+          "song-skip-start-response": "/me Skip Voting gestartet, Es müssen &{numberofSkips} weitere User !skip eingeben um den Song zu skippen!",
+          "song-skip-weiter-response": "/me Es müssen &{numberofSkips} weitere Personen !skip schreiben um den Song zu skippen!",
           "functionality": "Skip-Command"
         }
       ]
