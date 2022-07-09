@@ -24,10 +24,10 @@ public class RewardHandler {
         this.user = user;
         this.chat = chat;
         this.CustomRewardID = CustomRedwardID;
-        CheckReward();
+        checkReward();
     }
 
-    private void CheckReward() throws IOException, ParseException, InterruptedException {
+    private void checkReward() throws IOException, ParseException, InterruptedException {
         Logger logger = LoggerFactory.getLogger(RewardHandler.class);
         SongRewardID = new GetValuesfromJSON().getSpotifyValues("channel-point-rewardID", channel);
 

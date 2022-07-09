@@ -3,14 +3,11 @@ package commands;
 import Spotify.Song;
 import Spotify.getSong;
 import com.github.twitch4j.chat.TwitchChat;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utils.GetValuesfromJSON;
 
 import java.io.IOException;
-import java.net.http.HttpResponse;
 
 public class SongCommand {
 
@@ -21,7 +18,7 @@ public class SongCommand {
         Song song = getSong.getcurrentlyPlayingSong();
         int StatusCode = song.getStatuscode();
         String response;
-        long length = 0;
+        long length;
         if (StatusCode == 204) {
             response = GetResponeMessage("no-song-respone", JSON, channel);
         } else {
@@ -30,13 +27,11 @@ public class SongCommand {
             long timestamp = song.getSongTimestamp();
             length = song.getSongLength();
 
-            //TODO: Ausgabe entfernen
-            System.out.println("Song length: " + length + " Song stand: " + timestamp);
-
             response = GetResponeMessage("respone", JSON, channel);
             response = response.replace("&{Song}", Song);
             response = response.replace("&{Artist}", Artist);
-
+            response = response.replace("&{length}", String.valueOf(length));
+            response = response.replace("&{timestamp}", String.valueOf(timestamp));
         }
 
         chat.sendMessage(channel, response);

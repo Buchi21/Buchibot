@@ -31,11 +31,9 @@ public class GetSpotifyDeviceID {
             JSONArray devices = (JSONArray) responseObject.get("devices");
             device = (JSONObject) devices.get(0);
             return (String) device.get("id");
-        }catch(NullPointerException ignore){
-
+        }catch(NullPointerException | IndexOutOfBoundsException ignore){
+            return "1";
         }
-
-        return "1";
     }
 
     private HttpResponse<String> DeviceIDRequest() throws IOException, InterruptedException {

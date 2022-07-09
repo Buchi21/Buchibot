@@ -1,6 +1,7 @@
 package listener;
 
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
+import com.github.twitch4j.chat.ITwitchChat;
 import com.github.twitch4j.chat.TwitchChat;
 import com.github.twitch4j.common.events.domain.EventChannel;
 import com.github.twitch4j.events.ChannelChangeTitleEvent;
@@ -13,9 +14,9 @@ import java.io.IOException;
 
 public class titleChangeListener {
 
-    public final TwitchChat chat;
+    public final ITwitchChat chat;
 
-    public titleChangeListener(TwitchChat chat){
+    public titleChangeListener(ITwitchChat chat){
         this.chat = chat;
     }
 
@@ -41,7 +42,7 @@ public class titleChangeListener {
 
     private JSONObject getTitleEventObject(String channel) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
-        FileReader reader = new FileReader("C:\\Users\\felix\\IdeaProjects\\Twitch-Bot\\data\\events.json");
+        FileReader reader = new FileReader("data/events.json");
         JSONObject object = (JSONObject) jsonParser.parse(reader);
 
         JSONObject channelObject = (JSONObject) object.get(channel);
