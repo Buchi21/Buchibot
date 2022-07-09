@@ -10,13 +10,13 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.7.0'
+    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.10.0'
     implementation 'org.webjars.bowergithub.gthmb:apod-request:0.0.7'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.3'
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.0.0'
+    implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.1.0'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.36'
 }

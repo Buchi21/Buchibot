@@ -3,17 +3,11 @@ package bot;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
-import com.github.twitch4j.TwitchClient;
-import com.github.twitch4j.TwitchClientBuilder;
-import com.github.twitch4j.events.ChannelChangeTitleEvent;
-import com.github.twitch4j.events.ChannelGoLiveEvent;
-import com.github.twitch4j.pubsub.events.FollowingEvent;
-import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
-import commands.CommandHandler;
+import com.github.twitch4j.TwitchClientPool;
+import com.github.twitch4j.TwitchClientPoolBuilder;
 import listener.ChatListener;
 import listener.goLiveListener;
 import listener.titleChangeListener;
-import org.apache.hc.core5.reactor.Command;
 
 public class Botbuilder implements Runnable {
 
@@ -29,19 +23,27 @@ public class Botbuilder implements Runnable {
 
     @Override
     public void run(){
-        TwitchClient twitchClient = TwitchClientBuilder.builder()
+        TwitchClientPool twitchClient = TwitchClientPoolBuilder.builder()
                 .withEnableChat(true)
+                .withEnableChatPool(true)
                 .withChatAccount(oAuthToken)
                 .withDefaultAuthToken(oAuthToken)
                 .withEnablePubSub(true)
+                .withEnablePubSubPool(true)
                 .withEnableHelix(true)
                 .build();
-
-        EventManager eventManager = twitchClient.getEventManager();
 
         twitchClient.getChat().joinChannel(channel);
 
         twitchClient.getClientHelper().enableStreamEventListener(channel);
+
+        registerListener(twitchClient);
+
+    }
+
+    private void registerListener(TwitchClientPool twitchClient) {
+
+        EventManager eventManager = twitchClient.getEventManager();
 
         goLiveListener goLiveListener = new goLiveListener();
         eventManager.getEventHandler(SimpleEventHandler.class).registerListener(goLiveListener);
@@ -53,7 +55,6 @@ public class Botbuilder implements Runnable {
         eventManager.getEventHandler(SimpleEventHandler.class).registerListener(chatListener);
 
         /*twitchClient.getPubSub().listenForFollowingEvents(oAuthToken, channelID);
-        twitchClient.getEventManager().onEvent(FollowingEvent.class, System.out::println);*/
-
+        eventManager.onEvent(FollowingEvent.class, System.out::println);*/
     }
 }

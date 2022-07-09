@@ -36,8 +36,11 @@ public class ChatListener {
 
         if(!cooldownMap.containsKey(command) || command.equals("!skip")){
             int cooldown = new CommandHandler(command, user, channel, chat, permissions).checkMessageforCommand();
-            cooldownMap.put(command, cooldown);
-            startCooldown(command);
+
+            if(cooldown != 0){
+                cooldownMap.put(command, cooldown);
+                startCooldown(command);
+            }
         }
 
     }
