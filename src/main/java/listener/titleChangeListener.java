@@ -41,7 +41,7 @@ public class titleChangeListener {
 
     private JSONObject getTitleEventObject(String channel) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
-        FileReader reader = new FileReader("C:\\Users\\felix\\IdeaProjects\\Twitch-Bot\\data\\events.json");
+        FileReader reader = new FileReader("data/events.json");
         JSONObject object = (JSONObject) jsonParser.parse(reader);
 
         JSONObject channelObject = (JSONObject) object.get(channel);
