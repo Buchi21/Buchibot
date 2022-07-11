@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import utils.GetValuesfromJSON;
 import utils.WriteToJSON;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class RefreshTwitchAccessToken {
@@ -30,7 +31,15 @@ public class RefreshTwitchAccessToken {
 
         String ClientID = dotenv.get("TWITCH_CLIENT_ID");
         String ClientSecret = dotenv.get("TWITCH_CLIENT_SECRET");
-        String RefreshToken = (String) JSON.getTwitchJSONObject(channel).get("refresh-token");
+
+        String RefreshToken;
+
+        try{
+            RefreshToken = (String) JSON.getTwitchJSONObject(channel).get("refresh-token");
+        }catch (FileNotFoundException ignored){
+            System.out.println("Exception here!");
+            return -1;
+        }
 
         JSONParser parser = new JSONParser();
 
