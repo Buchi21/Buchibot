@@ -88,8 +88,11 @@ public class RefreshAccessToken implements Runnable{
 
                 int period = new RefreshTwitchAccessToken(channelName).RefreshToken() - 60;
 
+                if(period > 1){
+                    timer.cancel();
+                    new startRefreshTwitchTokenTimer().start(period, period);
+                }
                 timer.cancel();
-                new startRefreshTwitchTokenTimer().start(period, period);
             } catch (IOException | ParseException | InterruptedException e) {
                 e.printStackTrace();
             }
