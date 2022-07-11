@@ -84,7 +84,6 @@ public class RefreshAccessToken implements Runnable{
         @Override
         public void run() {
             try {
-                System.out.println("Refreshed Access Token for " + channelName);
 
                 int period = new RefreshTwitchAccessToken(channelName).RefreshToken() - 60;
 
