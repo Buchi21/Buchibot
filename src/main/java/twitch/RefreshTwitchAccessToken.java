@@ -37,7 +37,6 @@ public class RefreshTwitchAccessToken {
         try{
             RefreshToken = (String) JSON.getTwitchJSONObject(channel).get("refresh-token");
         }catch (FileNotFoundException ignored){
-            System.out.println("Exception here!");
             return -1;
         }
 
