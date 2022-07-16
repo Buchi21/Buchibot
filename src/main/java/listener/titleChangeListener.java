@@ -25,8 +25,6 @@ public class titleChangeListener {
         EventChannel channel = event.getChannel();
         String title = event.getTitle();
 
-        System.out.println(channel.getName());
-
         if(!checkTitleAnnounce(channel.getName())) {
             return;
         }
