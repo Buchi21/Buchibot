@@ -5,8 +5,11 @@ import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClientPool;
 import com.github.twitch4j.TwitchClientPoolBuilder;
+import com.github.twitch4j.chat.TwitchChat;
+import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
 import listener.ChatListener;
 import listener.goLiveListener;
+import listener.rewardListener;
 import listener.titleChangeListener;
 
 public class Botbuilder implements Runnable {
@@ -53,6 +56,10 @@ public class Botbuilder implements Runnable {
 
         ChatListener chatListener = new ChatListener();
         eventManager.getEventHandler(SimpleEventHandler.class).registerListener(chatListener);
+
+        twitchClient.getPubSub().listenForChannelPointsRedemptionEvents(oAuthToken, channelID);
+        rewardListener rewardListener = new rewardListener(twitchClient.getChat(), channel, channelID);
+        eventManager.getEventHandler(SimpleEventHandler.class).registerListener(rewardListener);
 
         /*twitchClient.getPubSub().listenForFollowingEvents(oAuthToken, channelID);
         eventManager.onEvent(FollowingEvent.class, System.out::println);*/
