@@ -20,7 +20,7 @@ public class RewardHandler {
     private final String customRewardID;
     private final String redemptionID;
 
-    public RewardHandler(String message, String channelID, String channel, String user, ITwitchChat chat, String CustomRedwardID, String redemptionID) throws IOException, ParseException, InterruptedException {
+    public RewardHandler(String message, String channelID, String channel, String user, ITwitchChat chat, String CustomRedwardID, String redemptionID) throws Exception {
         this.message = message;
         this.channelID = channelID;
         this.channel = channel;
@@ -31,7 +31,7 @@ public class RewardHandler {
         checkReward();
     }
 
-    private void checkReward() throws IOException, ParseException, InterruptedException {
+    private void checkReward() throws Exception {
         Logger logger = LoggerFactory.getLogger(RewardHandler.class);
         String songRewardID = new GetValuesfromJSON().getSpotifyValues("channel-point-rewardID", channel);
 
