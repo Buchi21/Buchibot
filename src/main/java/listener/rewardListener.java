@@ -22,7 +22,7 @@ public class rewardListener {
     }
 
     @EventSubscriber
-    public void onRewardRedeem(RewardRedeemedEvent event) throws IOException, ParseException, InterruptedException {
+    public void onRewardRedeem(RewardRedeemedEvent event) throws Exception {
         ChannelPointsRedemption redemption = event.getRedemption();
         String redemptionID = redemption.getId();
         String rewardID = redemption.getReward().getId();

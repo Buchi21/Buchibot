@@ -20,7 +20,7 @@ public class SongRequestReward {
     private final String rewardID;
     private final String redemptionID;
 
-    public SongRequestReward(String message, String channelName, String channelID, String user, ITwitchChat chat, String rewardID, String redemtionID) throws IOException, ParseException, InterruptedException {
+    public SongRequestReward(String message, String channelName, String channelID, String user, ITwitchChat chat, String rewardID, String redemtionID) throws Exception {
         this.message = message;
         this.channelName = channelName;
         this.channelID = channelID;
@@ -31,7 +31,7 @@ public class SongRequestReward {
         executeReward();
     }
 
-    private void executeReward() throws IOException, InterruptedException, ParseException {
+    private void executeReward() throws Exception {
         GetValuesfromJSON JSON = new GetValuesfromJSON();
         getSong getSong = new getSong(channelName);
         channelPointsAPI channelPointsAPI = new channelPointsAPI(redemptionID, channelID, channelName, rewardID);
