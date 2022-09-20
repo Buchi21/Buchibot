@@ -5,9 +5,6 @@ import com.github.twitch4j.chat.ITwitchChat;
 import com.github.twitch4j.pubsub.domain.ChannelPointsRedemption;
 import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
 import commands.RewardHandler;
-import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
 
 public class rewardListener {
 

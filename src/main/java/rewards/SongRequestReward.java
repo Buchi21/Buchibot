@@ -4,11 +4,13 @@ import Spotify.AddSongtoQueue;
 import Spotify.Song;
 import Spotify.getSong;
 import com.github.twitch4j.chat.ITwitchChat;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import twitch.channelPointsAPI;
 import utils.GetValuesfromJSON;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SongRequestReward {
 
@@ -47,11 +49,38 @@ public class SongRequestReward {
 
             Song song = getSong.getSongbyID(trackID);
 
+            if(checkSongIDinBlacklist(trackID)){
+                chat.sendMessage(channelName, "Blacklist");
+                channelPointsAPI.cancelRewardRedemption();
+                return;
+            }
+
+            int maxSongLength = Integer.parseInt(JSON.getSpotifyValues("max-song-length", channelName));
+            if(TimeUnit.MILLISECONDS.toSeconds(song.getSongLength()) > maxSongLength){
+                response = JSON.getSpotifyValues("max-song-length-answer", channelName);
+                chat.sendMessage(channelName, response);
+                channelPointsAPI.cancelRewardRedemption();
+                return;
+            }
+
             response = JSON.getSpotifyValues("song-request-response", channelName);
             response = response.replace("&{song}", song.getTitle());
             response = response.replace("&{artist}", song.getArtist());
             chat.sendMessage(channelName, response);
             new AddSongtoQueue(trackID, channelName);
         }
+    }
+
+    public boolean checkSongIDinBlacklist(String trackID) throws IOException, ParseException {
+        GetValuesfromJSON JSON = new GetValuesfromJSON();
+        JSONArray blacklistedSongs = JSON.getSongBlacklist();
+
+        for(int i = 0; i < blacklistedSongs.size(); i++){
+            String currentSong = (String) blacklistedSongs.get(i);
+            if(trackID.equals(currentSong)){
+                return true;
+            }
+        }
+        return false;
     }
 }
