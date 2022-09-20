@@ -3,46 +3,84 @@ package rewards;
 import Spotify.AddSongtoQueue;
 import Spotify.Song;
 import Spotify.getSong;
-import com.github.twitch4j.chat.TwitchChat;
+import com.github.twitch4j.chat.ITwitchChat;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
+import twitch.channelPointsAPI;
 import utils.GetValuesfromJSON;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SongRequestReward {
 
     private final String message;
-    private final String channel;
+    private final String channelName;
+    private final String channelID;
     private final String user;
-    private final TwitchChat chat;
+    private final ITwitchChat chat;
+    private final String rewardID;
+    private final String redemptionID;
 
-    public SongRequestReward(String message, String channel, String user, TwitchChat chat) throws IOException, ParseException, InterruptedException {
+    public SongRequestReward(String message, String channelName, String channelID, String user, ITwitchChat chat, String rewardID, String redemtionID) throws Exception {
         this.message = message;
-        this.channel = channel;
+        this.channelName = channelName;
+        this.channelID = channelID;
         this.user = user;
         this.chat = chat;
-        System.out.println("da sind wir");
+        this.rewardID = rewardID;
+        this.redemptionID = redemtionID;
         executeReward();
     }
 
-    private void executeReward() throws IOException, InterruptedException, ParseException {
+    private void executeReward() throws Exception {
         GetValuesfromJSON JSON = new GetValuesfromJSON();
-        getSong getSong = new getSong(channel);
+        getSong getSong = new getSong(channelName);
+        channelPointsAPI channelPointsAPI = new channelPointsAPI(redemptionID, channelID, channelName, rewardID);
+
         String response;
         if(!message.contains("https://open.spotify.com/track/")){
-            response = JSON.getSpotifyValues("no-link-response", channel);
-            chat.sendMessage(channel, response);
+            response = JSON.getSpotifyValues("no-link-response", channelName);
+            chat.sendMessage(channelName, response);
+            channelPointsAPI.cancelRewardRedemption();
         }else{
             String trackID = message.split("\\?")[0];
             trackID = trackID.replace("https://open.spotify.com/track/", "");
 
             Song song = getSong.getSongbyID(trackID);
 
-            response = JSON.getSpotifyValues("song-request-response", channel);
+            if(checkSongIDinBlacklist(trackID)){
+                chat.sendMessage(channelName, "Blacklist");
+                channelPointsAPI.cancelRewardRedemption();
+                return;
+            }
+
+            int maxSongLength = Integer.parseInt(JSON.getSpotifyValues("max-song-length", channelName));
+            if(TimeUnit.MILLISECONDS.toSeconds(song.getSongLength()) > maxSongLength){
+                response = JSON.getSpotifyValues("max-song-length-answer", channelName);
+                chat.sendMessage(channelName, response);
+                channelPointsAPI.cancelRewardRedemption();
+                return;
+            }
+
+            response = JSON.getSpotifyValues("song-request-response", channelName);
             response = response.replace("&{song}", song.getTitle());
             response = response.replace("&{artist}", song.getArtist());
-            chat.sendMessage(channel, response);
-            new AddSongtoQueue(trackID, channel);
+            chat.sendMessage(channelName, response);
+            new AddSongtoQueue(trackID, channelName);
         }
+    }
+
+    public boolean checkSongIDinBlacklist(String trackID) throws IOException, ParseException {
+        GetValuesfromJSON JSON = new GetValuesfromJSON();
+        JSONArray blacklistedSongs = JSON.getSongBlacklist();
+
+        for(int i = 0; i < blacklistedSongs.size(); i++){
+            String currentSong = (String) blacklistedSongs.get(i);
+            if(trackID.equals(currentSong)){
+                return true;
+            }
+        }
+        return false;
     }
 }
