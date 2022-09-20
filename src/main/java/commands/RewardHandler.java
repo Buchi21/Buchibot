@@ -32,10 +32,8 @@ public class RewardHandler {
     }
 
     private void checkReward() throws Exception {
-        Logger logger = LoggerFactory.getLogger(RewardHandler.class);
         String songRewardID = new GetValuesfromJSON().getSpotifyValues("channel-point-rewardID", channel);
 
-        logger.info("Entered Rewardhandler: " + customRewardID);
         if(customRewardID.equals(songRewardID)){
             new SongRequestReward(message, channel, channelID, user, chat, customRewardID, redemptionID);
         }

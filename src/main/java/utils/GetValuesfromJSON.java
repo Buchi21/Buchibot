@@ -77,6 +77,13 @@ public class GetValuesfromJSON {
         return getJSONObject(path);
     }
 
+    public JSONArray getSongBlacklist() throws IOException, ParseException {
+        String path = "data/blacklist.json";
+        JSONObject blacklist = getJSONObject(path);
+
+        return (JSONArray) blacklist.get("song-blacklist");
+    }
+
     private JSONObject getJSONObject(String path) throws IOException, ParseException {
 
         JSONParser jsonParser = new JSONParser();
