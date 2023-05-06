@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
 
@@ -19,12 +19,17 @@ dependencies {
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.2.0'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+    implementation 'ch.qos.logback:logback-core:1.4.7'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.36'
 }
 
 test {
     useJUnitPlatform()
 }
+
+/*shadowJar {
+    minimize()
+}*/
 
 jar{
     manifest {

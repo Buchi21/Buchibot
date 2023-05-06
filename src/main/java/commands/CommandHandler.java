@@ -11,9 +11,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rewards.SongRequestReward;
 import utils.GetValuesfromJSON;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -31,16 +34,19 @@ public record CommandHandler(String command, String user, String channel, Twitch
                 new SongCommand(channel, chat);
                 cooldown = new GetValuesfromJSON().GetdefaultCommandCooldown(channel, "song-command");
             }
-            else if(command.equals("!test")){
+            else if(command.equals("!testfeature")){
+
                 /*Song song = new getSong(channel).getSongbyID("41U52G6iwSCOPKfjERxxBz");
                 System.out.println("Titel: " + song.getTitle() + " Artist: " + song.getArtist());*/
+
+                /*String song = "https://open.spotify.com/track/4j519BYe2oplfAkKgovJo8?si=46314d1718d646f6";
+                new SongRequestReward(song, channel, "313131",user, chat,"dadaikodakda dada","dadaikodakda dada");*/
             }
             else{
                 cooldown = checkIfMessageContainsCustomCommand();
             }
-
-        } catch (NullPointerException e) {
-            logger.error(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return cooldown;
     }
@@ -79,6 +85,7 @@ public record CommandHandler(String command, String user, String channel, Twitch
             Video video = new getVideos().getNewestVideo(channel, youtubeChannelID);
             response = response.replace("&{title}", video.getTitle());
             response = response.replace("&{videoURL}", video.getVideoURL());
+            response = response.replace("&#39;","'");
         }else if(functionality.equals("Skip-Command")){
             response = skipCommand(commandObject);
             lastSong = new getSong(channel).getcurrentlyPlayingSong().getTitle();

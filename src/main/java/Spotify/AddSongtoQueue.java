@@ -17,8 +17,6 @@ import java.util.List;
 
 public class AddSongtoQueue {
 
-    private String BotResponse;
-
     public AddSongtoQueue(String SongID, String channel) throws IOException, org.json.simple.parser.ParseException {
 
         GetValuesfromJSON JSON = new GetValuesfromJSON();
@@ -47,8 +45,7 @@ public class AddSongtoQueue {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(post)) {
 
-            System.out.println(EntityUtils.toString(response.getEntity()));
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

@@ -29,8 +29,12 @@ public class RefreshAccessToken implements Runnable{
             Boolean SpotifyisActive = (Boolean) JSON.getSpotifyJSONObject(channelName).get("active");
             int TimerPeriodinSEC = 3600;
 
-            startRefreshTwitchTokenTimer twitchtimer = new startRefreshTwitchTokenTimer();
-            twitchtimer.start(0, TimerPeriodinSEC);
+            Boolean twitchActive = (Boolean) JSON.getTwitchJSONObject(channelName).get("active");
+
+            if(twitchActive){
+                startRefreshTwitchTokenTimer twitchtimer = new startRefreshTwitchTokenTimer();
+                twitchtimer.start(0, TimerPeriodinSEC);
+            }
 
             if(SpotifyisActive){
                 RefreshSpotifyTokenTimertask spotifytimertask = new RefreshSpotifyTokenTimertask();
