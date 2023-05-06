@@ -33,3 +33,6 @@ data/twitch.json
 *.bin
 data/spotify.json
 data/twitch.json
+data/blacklist.json
+data/commands.json
+
