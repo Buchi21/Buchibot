@@ -7,13 +7,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class getVideos {
+public class GetVideos {
 
     public Video getNewestVideo(String channel, String channelID) throws IOException, InterruptedException, ParseException {
         JSONObject reponseJson = getVideoRequest(channelID);

@@ -5,18 +5,15 @@ import Spotify.songActions;
 import com.github.twitch4j.chat.TwitchChat;
 import com.github.twitch4j.common.enums.CommandPermission;
 import google.Video;
-import google.getVideos;
+import google.GetVideos;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rewards.SongRequestReward;
 import utils.GetValuesfromJSON;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -82,7 +79,7 @@ public record CommandHandler(String command, String user, String channel, Twitch
 
         if(functionality.equals("Youtube-Video")){
             String youtubeChannelID = (String) commandObject.get("channel-id");
-            Video video = new getVideos().getNewestVideo(channel, youtubeChannelID);
+            Video video = new GetVideos().getNewestVideo(channel, youtubeChannelID);
             response = response.replace("&{title}", video.getTitle());
             response = response.replace("&{videoURL}", video.getVideoURL());
             response = response.replace("&#39;","'");

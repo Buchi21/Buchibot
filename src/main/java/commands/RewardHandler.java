@@ -34,9 +34,13 @@ public class RewardHandler {
     private void checkReward() throws Exception {
         String songRewardID = new GetValuesfromJSON().getSpotifyValues("channel-point-rewardID", channel);
 
+        System.out.println(customRewardID);
+
         if(customRewardID.equals(songRewardID)){
             new SongRequestReward(message, channel, channelID, user, chat, customRewardID, redemptionID);
         }
+
+        //TODO: Remove this temporary thingi
         if(customRewardID.equals("6f3710be-83ca-486a-a1d3-c291d0951ec1")){
             System.out.println("Canceling");
             new channelPointsAPI(redemptionID, channelID, channel, customRewardID).cancelRewardRedemption();

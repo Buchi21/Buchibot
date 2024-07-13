@@ -19,6 +19,14 @@
         },
         {
           "active": true,
+          "command" : "!zweitkanal",
+          "cooldown": "10",
+          "response": "/me Neuestes Video von einem Kanal > &{title} Link: &{videoURL}",
+          "functionality": "Youtube-Video",
+          "channel-id": "UCrJbNn3nnG4CaAm9fFoHdTA"
+        },
+        {
+          "active": true,
           "command" : "!skip",
           "cooldown": "0",
           "number-of-user-to-skip": "5",

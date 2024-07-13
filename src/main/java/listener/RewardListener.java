@@ -6,13 +6,13 @@ import com.github.twitch4j.pubsub.domain.ChannelPointsRedemption;
 import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
 import commands.RewardHandler;
 
-public class rewardListener {
+public class RewardListener {
 
     public final ITwitchChat chat;
     public final String channelName;
     public final String channelID;
 
-    public rewardListener(ITwitchChat chat, String channelName, String channelID) {
+    public RewardListener(ITwitchChat chat, String channelName, String channelID) {
         this.chat = chat;
         this.channelName = channelName;
         this.channelID = channelID;

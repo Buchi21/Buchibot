@@ -5,12 +5,10 @@ import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClientPool;
 import com.github.twitch4j.TwitchClientPoolBuilder;
-import com.github.twitch4j.chat.TwitchChat;
-import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
 import listener.ChatListener;
-import listener.goLiveListener;
-import listener.rewardListener;
-import listener.titleChangeListener;
+import listener.GoLiveListener;
+import listener.RewardListener;
+import listener.TitleChangeListener;
 
 public class Botbuilder implements Runnable {
 
@@ -48,17 +46,17 @@ public class Botbuilder implements Runnable {
 
         EventManager eventManager = twitchClient.getEventManager();
 
-        goLiveListener goLiveListener = new goLiveListener();
+        GoLiveListener goLiveListener = new GoLiveListener();
         eventManager.getEventHandler(SimpleEventHandler.class).registerListener(goLiveListener);
 
-        titleChangeListener titleListener = new titleChangeListener(twitchClient.getChat());
+        TitleChangeListener titleListener = new TitleChangeListener(twitchClient.getChat());
         eventManager.getEventHandler(SimpleEventHandler.class).registerListener(titleListener);
 
         ChatListener chatListener = new ChatListener();
         eventManager.getEventHandler(SimpleEventHandler.class).registerListener(chatListener);
 
         twitchClient.getPubSub().listenForChannelPointsRedemptionEvents(oAuthToken, channelID);
-        rewardListener rewardListener = new rewardListener(twitchClient.getChat(), channel, channelID);
+        RewardListener rewardListener = new RewardListener(twitchClient.getChat(), channel, channelID);
         eventManager.getEventHandler(SimpleEventHandler.class).registerListener(rewardListener);
 
         /*twitchClient.getPubSub().listenForFollowingEvents(oAuthToken, channelID);
