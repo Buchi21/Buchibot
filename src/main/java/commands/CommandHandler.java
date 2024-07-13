@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rewards.SongRequestReward;
 import utils.GetValuesfromJSON;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public record CommandHandler(String command, String user, String channel, Twitch
                 /*Song song = new getSong(channel).getSongbyID("41U52G6iwSCOPKfjERxxBz");
                 System.out.println("Titel: " + song.getTitle() + " Artist: " + song.getArtist());*/
 
-                /*String song = "https://open.spotify.com/track/4j519BYe2oplfAkKgovJo8?si=46314d1718d646f6";
+                /*String song = "https://open.spotify.com/intl-de/track/4odiyU3myG29Ld0wurMfE8?si=c008da5870264544";
                 new SongRequestReward(song, channel, "313131",user, chat,"dadaikodakda dada","dadaikodakda dada");*/
             }
             else{

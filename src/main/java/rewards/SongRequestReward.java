@@ -11,6 +11,8 @@ import utils.GetValuesfromJSON;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SongRequestReward {
 
@@ -38,20 +40,29 @@ public class SongRequestReward {
         getSong getSong = new getSong(channelName);
         channelPointsAPI channelPointsAPI = new channelPointsAPI(redemptionID, channelID, channelName, rewardID);
 
+        String trackPattern = "/track/([^?/]+)";
+        Pattern trackPatternP = Pattern.compile("/track/([^?/]+)");
+
         String response;
-        if(!message.contains("https://open.spotify.com/track/")){
+        if(!message.contains("spotify.com") && message.contains("/track/")){
             response = JSON.getSpotifyValues("no-link-response", channelName);
             chat.sendMessage(channelName, response);
-            channelPointsAPI.cancelRewardRedemption();
+
+            //TODO: Cancel Reward when it works
+            //channelPointsAPI.cancelRewardRedemption();
         }else{
-            String trackID = message.split("\\?")[0];
-            trackID = trackID.replace("https://open.spotify.com/track/", "");
+            Matcher m = trackPatternP.matcher(message);
+            String trackID = "";
+            if(m.find()){
+                trackID = m.group(1);
+            }
+            System.out.println(trackID);
 
             Song song = getSong.getSongbyID(trackID);
 
             if(checkSongIDinBlacklist(trackID)){
                 chat.sendMessage(channelName, "Blacklist");
-                channelPointsAPI.cancelRewardRedemption();
+                //channelPointsAPI.cancelRewardRedemption();
                 return;
             }
 

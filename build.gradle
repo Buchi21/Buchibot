@@ -27,9 +27,9 @@ test {
     useJUnitPlatform()
 }
 
-shadowJar {
+/*shadowJar {
     minimize()
-}
+}*/
 
 jar{
     manifest {
